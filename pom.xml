@@ -8,6 +8,9 @@
   <packaging>pom</packaging>
 
   <name>Mentoring2</name>
+  <modules>
+    <module>week4.1-education-tasks</module>
+  </modules>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
