@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Карточка клиента</title>
+    <style>
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table tr {
+            border-bottom: 1px solid #ddd;
+        }
+
+        .table tr:last-child {
+            border-bottom: none;
+        }
+
+        .client-item {
+            padding: 8px 0;
+        }
+
+        .table p {
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body>
+<div id="customer" th:if="${customer != null}">
+    <h2>Клиент:</h2>
+    <table class="table">
+        <tbody>
+        <tr class="client-item">
+            <td>
+                <p><strong>№ читательского билета:</strong> <span th:text="${customer.id}"></span></p>
+                <p><strong>Имя:</strong> <span th:text="${customer.firstName}"></span></p>
+                <p><strong>Фамилия:</strong> <span th:text="${customer.LastName}"></span></p>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div id="rentDetails" th:if="${not #lists.isEmpty(rentDetails)}">
+    <h2>Список аренд:</h2>
+    <table class="table">
+        <tbody>
+        <tr th:each="rent : ${rentDetails}" class="client-item">
+            <form action="endRent" th:action="@{/endRent}" method="post">
+                <td>
+                    <p><strong>Регистрационный номер книги:</strong> <span th:text="${rent.book.id}"></span></p>
+                    <p><strong>Книга:</strong> <span th:text="${rent.book.title}"></span></p>
+                    <p><strong>Дата начала аренды:</strong> <span th:text="${rent.startDate}"></span></p>
+                    <p th:if="${rent.endDate} != null"><strong>Дата окончания аренды:</strong> <span th:text="${rent.endDate}"></span></p>
+                    <input type="hidden" name="rent_id" th:value="${rent.id}">
+                    <input type="hidden" name="customer_id" th:value="${rent.customer.id}">
+                    <input type="submit" value="Сдать книгу" th:if="${rent.endDate == null}">
+                </td>
+            </form>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div th:if="${#lists.isEmpty(rentDetails)}">
+    <p>Активные аренды отсутствуют</p>
+</div>
+
+<div th:if="${customer == null}">
+    <p>Клиент не найден</p>
+</div>
+<br>
+<input type="button" th:onclick="'window.location.href=\'' + @{'/history_rent'(id=${customer.id})} + '\''" value="История аренд"/>
+<br>
+<input type="button" onclick="location.href='http://localhost:8080/library';" value="Назад"/>
+
+</body>
+</html>
