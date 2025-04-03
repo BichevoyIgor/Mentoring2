@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Библиотека</title>
+</head>
+<body>
+
+<form action="addBook" th:action="@{/addBook}" method="post">
+    <H1>Добавить в базу новую книгу</H1>
+    <input type="text" name="title" th:value="${book?.title}" placeholder="Укажите название книги"/>
+    <br>
+    <input type="text" name="authorsInput" placeholder="Укажите авторов книги (через запятую)"/>
+    <br>
+    <input type="text" name="genre" th:value="${book?.genre}" placeholder="Укажите жанр книги"/>
+    <br>
+    <input type="text" name="description" th:value="${book?.description}" placeholder="Описание книги"/>
+    <br>
+    <input type="submit" value="Добавить книгу">
+</form>
+
+<form action="showBook" method="get">
+    <H1>Показать информацию о книге</H1>
+    <input type="text" name="title" placeholder="Укажите название книги"/>
+    <br>
+    <input type="submit">
+</form>
+
+<form action="showBookFromAPI" method="get">
+    <H1>Показать информацию о книге из API</H1>
+    <input type="text" name="title" th:value="${book?.title}" placeholder="Укажите название книги"/>
+    <br>
+    <input type="submit">
+</form>
+
+<form action="rentBook" method="post">
+    <H1>Аренда книги</H1>
+    <input type="text" name="book_title" placeholder="Укажите название книги"/>
+    <br>
+    <input type="text" name="customer_id" placeholder="№ читательского билета"/>
+    <br>
+    <input type="submit">
+</form>
+
+<form action="addcustomer" th:action="@{/addCustomer}" method="post">
+    <H1>Добавить в базу нового клиента</H1>
+    <input type="text" name="firstName" th:value="${customer.firstName}" placeholder="Укажите Имя клиента"/>
+    <br>
+    <input type="text" name="lastName" th:value="${customer.lastName}" placeholder="Укажите Фамилию"/>
+    <br>
+    <input type="submit">
+</form>
+
+<form action="showInfoCustomer" th:action="@{/showInfoCustomer}" method="get">
+    <H1>Инфо о клиенте</H1>
+    <input type="text" name="id" placeholder="№ читательского билета"/>
+    <br>
+    <input type="submit">
+</form>
+
+</body>
+</html>

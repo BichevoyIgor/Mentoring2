@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Инфо о книге</title>
+    <style>
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table tr {
+            border-bottom: 1px solid #ddd;
+        }
+
+        .table tr:last-child {
+            border-bottom: none;
+        }
+
+        .book-item {
+            padding: 8px 0;
+        }
+
+        .table p {
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body>
+<div id="booksList" th:if="${not #lists.isEmpty(books)}">
+    <h2>Список книг:</h2>
+    <table class="table">
+        <tbody>
+        <tr th:each="book : ${books}" class="book-item">
+            <td>
+                <p><strong>Название:</strong> <span th:text="${book.title}"></span></p>
+                <p><strong>Жанр:</strong> <span th:text="${book.genre}"></span></p>
+                <p><strong>Автор(ы):</strong>
+                    <span th:each="author,iterStat : ${book.authors}"
+                          th:text="${author.name} + (${not iterStat.last} ? ', ' : '')">
+                    </span>
+                </p>
+                <p><strong>Описание:</strong> <span th:text="${book.description}"></span></p>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Сообщение, если книг нет -->
+<div th:if="${#lists.isEmpty(books)}">
+    <p>Нет сохранённых книг</p>
+</div>
+<input type="button" onclick="location.href='http://localhost:8080/library';" value="Назад"/>
+</body>
+</html>

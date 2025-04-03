@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Детали аренды</title>
+    <style>
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table tr {
+            border-bottom: 1px solid #ddd;
+        }
+
+        .table tr:last-child {
+            border-bottom: none;
+        }
+
+        .item {
+            padding: 8px 0;
+        }
+
+        .table p {
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body>
+<div id="rentDetail" th:if="${rentDetail != null}">
+    <h2>Клиент:</h2>
+    <table class="table">
+        <tbody>
+        <tr class="item">
+            <td>
+                <p><strong>№ читательского билета:</strong> <span th:text="${rentDetail.customer.id}"></span></p>
+                <p><strong>Имя:</strong> <span th:text="${rentDetail.customer.firstName}"></span></p>
+                <p><strong>Фамилия:</strong> <span th:text="${rentDetail.customer.LastName}"></span></p>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h2>Книга:</h2>
+    <table class="table">
+        <tbody>
+        <tr class="item">
+            <td>
+                <p><strong>Название:</strong> <span th:text="${rentDetail.book.title}"></span></p>
+                <p><strong>Жанр:</strong> <span th:text="${rentDetail.book.genre}"></span></p>
+                <p><strong>Автор(ы):</strong>
+                    <span th:each="author,iterStat : ${rentDetail.book.authors}"
+                          th:text="${author.name} + (${not iterStat.last} ? ', ' : '')">
+                    </span>
+                </p>
+                <p><strong>Описание:</strong> <span th:text="${rentDetail.book.description}"></span></p>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<p><strong>Дата начала аренды:</strong> <span th:text="${rentDetail.startDate}"></span></p>
+<p><strong>Дата окончания аренды:</strong> <span th:text="${rentDetail.endDate}"></span></p>
+
+<div th:if="${rentDetail == null}">
+    <p>Аренда не найдена</p>
+</div>
+<input type="button" onclick="location.href='http://localhost:8080/library';" value="Назад"/>
+
+</body>
+</html>
