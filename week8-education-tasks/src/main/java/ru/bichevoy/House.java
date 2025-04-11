@@ -29,12 +29,12 @@ public class House {
     }
 
     @PostConstruct
-    private void init(){
+    private void init() {
         System.out.println("Бин House создан");
     }
 
     @PreDestroy
-    public void destroy(){
+    public void destroy() {
         System.out.println("Бин House уничтожен");
     }
 }

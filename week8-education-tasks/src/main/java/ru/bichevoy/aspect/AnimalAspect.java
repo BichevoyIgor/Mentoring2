@@ -16,8 +16,8 @@ import org.springframework.stereotype.Component;
 public class AnimalAspect {
 
     @Before("execution(* ru.bichevoy.Animal+.makeSound())")
-    public void beforeAnimalMakeSound(JoinPoint joinPoint){
+    public void beforeAnimalMakeSound(JoinPoint joinPoint) {
         SourceLocation sourceLocation = joinPoint.getSourceLocation();
-        System.out.println("Сейчас прозвучит животный звук из класса "+ sourceLocation.getWithinType().getSimpleName());
+        System.out.println("Сейчас прозвучит животный звук из класса " + sourceLocation.getWithinType().getSimpleName());
     }
 }

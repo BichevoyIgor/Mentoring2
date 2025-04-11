@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 @Primary
-public class Dog extends Animal{
+public class Dog extends Animal {
 
     @Override
     public void makeSound() {
