@@ -1,0 +1,4 @@
+2025-04-11 15:10:59 [INFO] ru.bichevoy.service.CardService - Add card 5. монитор - monitor
+2025-04-11 15:12:48 [INFO] ru.bichevoy.service.CardService - Remove card by id = 5
+2025-04-11 15:17:47 [INFO] ru.bichevoy.service.CardService - Remove card by id = 4
+2025-04-11 15:18:11 [INFO] ru.bichevoy.service.CardService - Remove card by id = 100
