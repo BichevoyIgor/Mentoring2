@@ -3,6 +3,7 @@
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
       <module name="week7-homework" target="17" />
+      <module name="week8-education-tasks" target="23" />
     </bytecodeTargetLevel>
   </component>
 </project>
