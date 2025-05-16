@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Error</title>
+</head>
+<body>
+<form th:action="@{/logout}" method="post">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    <span th:text="${currentUsername}"></span>
+    <button type="submit">Выйти</button>
+</form>
+
+<p>
+    <h3 th:text="${message}"></h3>
+</p>
+<br>
+<a href="/questions">К списку вопросов</a>
+</body>
+</html>

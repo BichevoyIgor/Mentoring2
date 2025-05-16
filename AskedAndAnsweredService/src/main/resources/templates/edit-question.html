@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Редактирование вопроса</title>
+</head>
+<body>
+<form th:action="@{/logout}" method="post">
+    <span th:text="${currentUsername}"></span>
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    <button type="submit">Выйти</button>
+</form>
+
+<h1>Редактирование вопроса</h1>
+<form th:action="@{/questions/{id}/edit(id=${question.id})}"
+      th:object="${question}" method="post">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+    <div>
+        <label>Заголовок:</label>
+        <input type="text" th:field="*{header}" required>
+    </div>
+    <br>
+    <div>
+        <label>Описание:</label>
+        <textarea th:field="*{description}" rows="5" cols="50" required></textarea>
+    </div>
+    <br>
+    <button type="submit">Сохранить</button>
+    <a th:href="@{/questions/{id}(id=${question.id})}">Отмена</a>
+</form>
+
+<br>
+<br>
+<a href="/questions">К списку вопросов</a>
+</body>
+</html>

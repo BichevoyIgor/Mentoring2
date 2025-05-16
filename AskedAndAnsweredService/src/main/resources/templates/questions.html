@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Вопросы</title>
+</head>
+<body>
+<form th:action="@{/logout}" method="post">
+    <h3><span th:text="${currentUsername}"></span></h3>
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    <button type="submit" class="btn btn-link">Выйти</button>
+</form>
+<br>
+<form th:action="@{/questions/find-question}" method="post">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    <span>Найти вопрос: <input type="text" th:name="question"></span>
+    <button type="submit" class="btn btn-link">Поиск</button>
+</form>
+<br>
+<div>
+    <table border="1" bordercolor="grey" width="100%" cellpadding="10">
+        <tr>
+            <th>Вопрос</th>
+            <th>Автор</th>
+            <th>Дата</th>
+            <th>Tag</th>
+        </tr>
+        <tr th:each="question : ${questions}">
+            <td>
+                <a th:href="@{/questions/{id}(id=${question.id})}"
+                   th:text="${question.header}">вопрос</a>
+            </td>
+            <td>
+                <a th:href="@{/users/{author}(author=${question.author})}" th:text="${question.author}">автор</a>
+            </td>
+            <td th:text="${question.createDate}">дата</td>
+            <td>
+                <!-- Если теги есть - выводим через запятую -->
+                <span th:if="${not question.tags.isEmpty()}">
+                    <th:block th:each="tag,iter : ${question.tags}">
+                        <a th:href="@{/questions/tagged/{tag}(tag=${tag})}"
+                           th:text="${tag}">тег</a>
+                        <span th:if="${not iter.last}">, </span>
+                    </th:block>
+                </span>
+                <!-- Если тегов нет - пустая ячейка -->
+                <span th:unless="${not question.tags.isEmpty()}">&nbsp;</span>
+            </td>
+        </tr>
+    </table>
+</div>
+<br>
+<form th:action="@{/questions/ask-question}" method="get">
+    <button type="submit" class="btn btn-link">Задать вопрос</button>
+</form>
+
+</body>
+</html>
