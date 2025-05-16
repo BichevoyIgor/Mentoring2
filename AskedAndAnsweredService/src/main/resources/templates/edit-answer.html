@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Детали вопроса</title>
+</head>
+<body>
+<form th:action="@{/logout}" method="post">
+    <span th:text="${currentUsername}"></span>
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    <button type="submit" class="btn btn-link">Выйти</button>
+</form>
+<form th:object="${question}">
+    <h3>Спрашивает: <span th:text="${question.author}">логин</span></h3>
+    <hr>
+    <h1 th:text="${question.header}">Заголовок вопроса</h1>
+    <div th:text="${question.description}">Описание вопроса</div>
+</form>
+<br>
+<div th:if="${question.author == currentUsername}">
+    <a th:href="@{/questions/{id}/edit(id=${question.id})}"> Редактировать вопрос </a>
+</div>
+<br>
+<hr>
+<div th:each="answer : ${answers}">
+    <div th:if="${answerId != answer.id}">
+        <p>
+            <span th:text="|${answer.userName} [${answer.date()}]:|">Логин [дата]:</span>
+            <br>
+            <span th:text="${answer.content}">Ответ на вопрос</span>
+            <br>
+            <span th:if="${answer.userName == currentUsername}">
+    <a th:href="@{/questions}"> Редактировать ответ </a>
+    </span>
+        </p>
+    </div>
+
+    <div th:if="${answerId == answer.id}" class="answer-form">
+        <form th:action="@{/questions/{id-question}/edit_answer/{id-answer}(id-question=${question.id}, id-answer=${answer.id})}" method="post">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+            <input type="hidden" name="id" th:value="${answer.id}">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+            <strong th:text="|${answer.userName} [${answer.date()}]:|"></strong>
+            <br>
+            <textarea name="content" class="edit-textarea" th:text="${answer.content}"></textarea>
+            <br>
+            <button type="submit">Сохранить</button>
+            <a th:href="@{/questions/{Id}(Id=${question.id})}">Отмена</a>
+        </form>
+    </div>
+</div>
+
+<form th:action="@{/questions/{id}/add-answer(id=${question.id})}" method="post">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    <textarea type="text" name="answer" placeholder="Ответ на вопрос" rows="5" cols="50"></textarea>
+    <br>
+    <button type="submit">Сохранить</button>
+</form>
+<br>
+<br>
+<a href="/questions">К списку вопросов</a>
+</body>
+</html>

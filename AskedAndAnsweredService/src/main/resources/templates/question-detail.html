@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Детали вопроса</title>
+</head>
+<body>
+<form th:action="@{/logout}" method="post">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    <span th:text="${currentUsername}"></span>
+    <button type="submit" class="btn btn-link">Выйти</button>
+</form>
+<form th:object="${question}">
+    <h3>Спрашивает: <span th:text="${question.author}">логин</span></h3>
+    <hr>
+    <h1 th:text="${question.header}">Заголовок вопроса</h1>
+    <div th:text="${question.description}">Описание вопроса</div>
+    <br>
+</form>
+<br>
+<div th:if="${question.author == currentUsername}">
+    <a th:href="@{/questions/{id}/edit(id=${question.id})}"> Редактировать вопрос </a>
+</div>
+<table>
+    <tr>
+        <td>
+            <!-- кнопка like голосования за вопрос -->
+            <form th:action="@{/questions/vote}" method="post">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                <input type="hidden" name="voteType" value="UP">
+                <input type="hidden" name="questionId" th:value="${question.id}">
+                <button type="submit" th:text="|&#9989 ${questionVotesMap['UP'] ?: 0}|"> &#9989</button>
+            </form>
+        </td>
+        <td>
+            <!-- кнопка dislike голосования за вопрос-->
+            <form th:action="@{/questions/vote}" method="post">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                <input type="hidden" name="voteType" value="DOWN">
+                <input type="hidden" name="questionId" th:value="${question.id}">
+                <button type="submit" th:text="|&#10060 ${questionVotesMap['DOWN'] ?: 0}|"> &#10060</button>
+            </form>
+        </td>
+    </tr>
+</table>
+<br>
+<hr>
+<div th:each="answer : ${answers}">
+    <span th:text="|${answer.userName} [${answer.date()}]:|">Логин [дата]:</span>
+    <br>
+    <span th:text="${answer.content}">Ответ на вопрос</span>
+    <br>
+    <span th:if="${answer.userName == currentUsername}">
+        <a th:href="@{/questions/{id-question}/edit_answer/{id-answer}(id-question=${question.id}, id-answer=${answer.id})}"> Редактировать ответ </a>
+    </span>
+    <table>
+        <tr>
+            <td>
+                <!-- кнопка like голосования за ответ -->
+                <form th:action="@{/questions/vote}" method="post">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                    <input type="hidden" name="voteType" value="UP">
+                    <input type="hidden" name="questionId" th:value="${question.id}">
+                    <input type="hidden" name="answerId" th:value="${answer.id}">
+                    <button type="submit" th:text="|&#9989 ${answersVotes != null && answersVotes.containsKey(answer.id) ? (answersVotes[answer.id]?.countUP ?: 0) : 0}|">&#9989</button>
+                </form>
+            </td>
+            <td>
+                <!-- кнопка dislike голосования за ответ-->
+                <form th:action="@{/questions/vote}" method="post">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                    <input type="hidden" name="voteType" value="DOWN">
+                    <input type="hidden" name="questionId" th:value="${question.id}">
+                    <input type="hidden" name="answerId" th:value="${answer.id}">
+                    <button type="submit" th:text="|&#10060 ${answersVotes != null && answersVotes.containsKey(answer.id) ? (answersVotes[answer.id]?.countDown ?: 0) : 0}|"> &#10060</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+    <br>
+</div>
+<form th:action="@{/questions/{id}/add-answer(id=${question.id})}" method="post">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    <textarea type="text" name="answer" placeholder="Ответ на вопрос" rows="5" cols="50"></textarea>
+    <br>
+    <button type="submit">Сохранить</button>
+</form>
+<br>
+<br>
+<a href="/questions">К списку вопросов</a>
+</body>
+</html>
