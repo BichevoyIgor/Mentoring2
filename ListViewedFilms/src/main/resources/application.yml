@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: ListViewedFilms
+
+  datasource:
+    username: ${POSTGRES_USERNAME}
+    password: ${POSTGRES_PASSWORD}
+    url: ${POSTGRES_URL}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+    mvc:
+      view:
+        suffix: .html
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+
+OMB_URI: ${OMB_URI}
+CACHE_LIFE: 60
+MAX_PAGE_SIZE_REST_RESPONSE: 200

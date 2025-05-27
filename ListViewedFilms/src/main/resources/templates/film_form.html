@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавление фильма в библиотеку</title>
+</head>
+<body>
+<form th:action="@{/films}" method="post">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    <input type="hidden" name="id" th:value="${film?.id}">
+    <table>
+        <tr>
+            <td>Название фильма:</td>
+            <td><input type="text" name="title" th:value="${film?.title ?: 'Не указано'}"></td>
+        </tr>
+        <tr>
+            <td>Год выхода:</td>
+            <td><input type="text" name="year" th:value="${film?.year ?: '1900'}"></td>
+        </tr>
+        <tr>
+            <td>Жанр фильма:</td>
+            <td>
+                <input type="text"
+                       name="genres"
+                       th:value="${film?.genres?.![title] != null ?
+                         #strings.listJoin(film.genres.![title], ', ') :
+                         'жанры через запятую'}"
+                       placeholder="укажите жанры через запятую">
+            </td>
+        </tr>
+        <tr>
+            <td>Актеры:</td>
+            <td>
+                <input type="text"
+                       name="actors"
+                       th:value="${film?.actors?.![name] != null ?
+                         #strings.listJoin(film.actors.![name], ', ') :
+                         'актеры через запятую'}"
+                       placeholder="укажите актеров через запятую">
+            </td>
+        </tr>
+        <tr>
+            <td>Постер к фильму:</td>
+            <td><input type="text" name="poster" th:value="${film?.poster ?: 'https//:...'}"></td>
+        </tr>
+        <tr>
+            <td>Оценка:</td>
+            <td><input type="text" name="rating" th:value="${film?.rating ?: 'от 0 до 10'}"></td>
+        </tr>
+        <tr>
+            <td>Делюсь:</td>
+            <td>
+                <select name="share">
+                    <option th:value="true" th:selected="${film != null && film.share == true}">Да</option>
+                    <option th:value="false" th:selected="${film == null || film.share == false}">Нет</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Описание к фильму:</td>
+            <td>
+            <textarea name="description" rows="5" cols="100"
+                      th:text="${film?.description ?: 'описание'}"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <button type="submit">Сохранить</button>
+            </td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>

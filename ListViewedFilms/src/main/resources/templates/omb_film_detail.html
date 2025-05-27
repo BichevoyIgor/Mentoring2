@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Детали фильма</title>
+</head>
+<body>
+<form th:action="@{/find-film-in-external-API}" method="get">
+    <H3>Найти инфо о фильме на www.omdbapi.com</H3>
+    <span>Название фильма: <input type="text" th:name="searchTitle"></span>
+    <button type="submit" class="btn btn-link">Найти</button>
+</form>
+<br>
+<H3>Детали фильма</H3>
+<div>
+    <table border="1" bordercolor="white" cellpadding="10">
+        <tbody>
+        <tr>
+            <td rowspan="6"><img th:src="${film.Poster}" alt="poster"></td>
+            <td>Название:</td>
+            <td th:text="${film.Title}"></td>
+        </tr>
+        <tr>
+            <td>Год:</td>
+            <td th:text="${film.Year}"></td>
+        </tr>
+        <tr>
+            <td>Жанр:</td>
+            <td th:text="${film.Genre}"></td>
+        </tr>
+        <tr>
+            <td>Актеры:</td>
+            <td th:text="${film.Actors}"></td>
+        </tr>
+        <tr>
+            <td>Рейтинг:</td>
+            <td th:text="${film.imdbRating}"></td>
+        </tr>
+        <tr>
+            <td>Описание:</td>
+            <td th:text="${film.Plot}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<form th:action="@{/find-film-in-external-API/add-in-library/{id}(id=${film.imdbID()})}" method="get">
+    <button type="submit" class="btn btn-link">Добавить к себе</button>
+</form>
+
+</body>
+</html>

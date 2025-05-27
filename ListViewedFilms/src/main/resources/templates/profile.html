@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Friends</title>
+</head>
+<body>
+<form th:action="@{/logout}" method="post">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    <h3><span th:text="${currentUsername}"></span></h3>
+    <button type="submit" class="btn btn-link">Выйти</button>
+</form>
+<br>
+<form th:action="@{/profile/addFriend}" method="get">
+    <span>Ник друга: <input type="text" th:name="friendName"></span>
+    <button type="submit" class="btn btn-link">Добавить</button>
+</form>
+
+<br>
+<div th:each="friend : ${friends}">
+    <a th:href="@{/profile/{friendName}(friendName=${friend.name})}"
+       th:text="${friend.name}">Ник друга</a>
+</div>
+<br>
+<form th:action="@{/films}" method="get">
+    <button type="submit" class="btn btn-link">На главную</button>
+</form>
+
+
+<div th:if="${friendFilms != null and not friendFilms.empty}">
+    <table border="1" bordercolor="white" cellpadding="10" th:each="film : ${friendFilms.content}">
+        <tbody>
+        <tr>
+            <td rowspan="7" width="300" height="400">
+                <img th:src="${film.poster}" alt="poster"
+                     style="max-width: 100%; max-height: 100%; width: auto; height: auto"></td>
+            <td>Название:</td>
+            <td th:text="${film.title}"></td>
+        </tr>
+        <tr>
+            <td>Год:</td>
+            <td th:text="${film.year}"></td>
+        </tr>
+        <tr>
+            <td>Жанр:</td>
+            <td>
+                <span th:if="${not film.genres.isEmpty()}">
+                    <th:block th:each="genre,iter : ${film.genres}">
+                        <a th:href="@{/films/genre/{genre_id}(genre_id=${genre.id})}"
+                           th:text="${genre.title}">Жанр</a>
+                        <span th:if="${not iter.last}">, </span>
+                    </th:block>
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <td>Актеры:</td>
+            <td>
+                <span th:if="${not film.actors.isEmpty()}">
+                    <th:block th:each="actor,iter : ${film.actors}">
+                        <a th:href="@{https://ru.wikipedia.org/wiki/{actor_name}(actor_name=${actor.name})}"
+                           th:text="${actor.name}" th:target="_blank">Актер</a>
+                        <span th:if="${not iter.last}">, </span>
+                    </th:block>
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <td>Рейтинг:</td>
+            <td th:text="${film.rating}"></td>
+        </tr>
+        <tr>
+            <td>Описание:</td>
+            <td th:text="${film.description}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div>
+    <span th:if="${currentPage > 0}">
+        <a th:href="@{/profile/{friendName}(page=${currentPage -1}, friendName=${friendName})}"><< Назад</a>
+    </span>
+
+        <span>Страница <span th:text="${currentPage+1}"></span> из <span th:text="${totalPages}"></span></span>
+
+        <span th:if="${currentPage+1 < totalPages}">
+        <a th:href="@{/profile/{friendName}(page=${currentPage + 1}, friendName=${friendName})}">Вперед >></a>
+    </span>
+    </div>
+</div>
+
+</body>
+</html>
