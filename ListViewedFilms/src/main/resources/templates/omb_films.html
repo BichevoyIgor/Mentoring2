@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form th:action="@{/find-film-in-external-API}" method="get">
+    <H3>Найти инфо о фильме на www.omdbapi.com</H3>
+    <span>Название фильма: <input type="text" th:name="searchTitle"></span>
+    <button type="submit" class="btn btn-link">Найти</button>
+</form>
+<br>
+<div th:each="film : ${films.Search}">
+    <table border="1" bordercolor="white" cellpadding="10">
+        <tbody>
+        <tr>
+            <td rowspan="6" width="300" height="400">
+                <img th:src="${film.Poster}" alt="poster" style="max-width: 100%; max-height: 100%; width: auto; height: auto"></td>
+            <td>Название:</td>
+            <td th:text="${film.Title}"></td>
+        </tr>
+        <tr>
+            <td>Год:</td>
+            <td th:text="${film.Year}"></td>
+        </tr>
+        <tr>
+            <td>
+                <form th:action="@{/find-film-in-external-API/{id}(id=${film.imdbID()})}" method="get">
+                    <button type="submit" class="btn btn-link">Детали</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div>
+    <span th:if="${currentPage > 1}">
+        <a th:href="@{/find-film-in-external-API(page=${currentPage -1}, searchTitle=${searchTitle})}"><< Назад</a>
+    </span>
+
+    <span>Страница <span th:text="${currentPage}"></span> из <span th:text="${totalPages}"></span></span>
+
+    <span th:if="${currentPage < totalPages}">
+        <a th:href="@{/find-film-in-external-API(page=${currentPage + 1}, searchTitle=${searchTitle})}">Вперед >></a>
+    </span>
+</div>
+
+</body>
+</html>
